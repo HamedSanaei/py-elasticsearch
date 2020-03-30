@@ -1,5 +1,6 @@
 import csv
 import json
+from datetime import datetime
 
 
 class CsvToJson:
@@ -61,3 +62,31 @@ class CsvToJson:
             # make it more readable and pretty
             jsonFile.write(json.dumps(data, indent=4))
 
+    @classmethod
+    def convertCreationDateStringToInt(cls, jsonPath):
+        data = []
+        with open(jsonPath) as f:
+            data = json.load(f)
+            for d in data:
+                d['CreationDate'] = int(datetime.strptime(
+                    d['CreationDate'], '%Y-%m-%d %H:%M:%S').utcnow().timestamp())*1000
+
+        with open(jsonPath, 'w') as jsonFile:
+            # make it more readable and pretty
+            jsonFile.write(json.dumps(data, indent=4))
+
+    @classmethod
+    def convertCreationDateStringTomilisecond(cls, jsonPath):
+        data = []
+        with open(jsonPath) as f:
+            data = json.load(f)
+            for d in data:
+                d['CreationDate'] = d['CreationDate']*1000
+
+        with open(jsonPath, 'w') as jsonFile:
+            # make it more readable and pretty
+            jsonFile.write(json.dumps(data, indent=4))
+
+
+# dd = CsvToJson()
+# dd.convertCreationDateStringTomilisecond("data/QueryResults2.json")

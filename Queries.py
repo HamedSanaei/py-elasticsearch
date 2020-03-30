@@ -52,7 +52,7 @@ class Queries:
         print("==================== This Is Answer To Question Four ====================")
         res = cls.es.search(index=indexx, body={
                             "from": 0, "size": 300, "query": {"bool": {
-                                "should": [
+                                "must": [
                                     {"match_phrase": {"ParentId": idd}},
                                     {"range": {"Score": {"gte": score,
                                                          "boost": 1.0}}}
@@ -72,21 +72,21 @@ class Queries:
 
     @classmethod
     def sixthQuestion(cls, indexx, query, datee):
-        date_time = datee.strftime("%Y-%d-%mT%H:%M:%S")
+        # date_time = datee.strftime("%Y-%d-%m %H:%M:%S")
         # "2018-01-01T00:00:00"
+
+        date_int = int(datee.utcnow().timestamp())*1000
         print("==================== This Is Answer To Question Six ====================")
         res = cls.es.search(index=indexx, body={
                             "from": 0, "size": 300, "query": {"bool": {
-                                "should": [
+                                "must": [
                                     {"multi_match": {
                                         "query": query,
                                         "fields": ["Title", "Body"]
                                     }},
                                     {"range": {
-                                        "timestamp": {
-                                            "time_zone": "+00:00",
-                                            "gte": date_time,
-                                            "lte": "now"
+                                        "CreationDate": {
+                                            "gte": date_int
                                         }
                                     }}
                                 ]

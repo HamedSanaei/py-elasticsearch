@@ -75,7 +75,8 @@ class Queries:
         # date_time = datee.strftime("%Y-%d-%m %H:%M:%S")
         # "2018-01-01T00:00:00"
 
-        date_int = int(datee.utcnow().timestamp())*1000
+        date_int = int(datee.timestamp())*1000
+        now = int(datetime.now().utcnow().timestamp()*1000)
         print("==================== This Is Answer To Question Six ====================")
         res = cls.es.search(index=indexx, body={
                             "from": 0, "size": 300, "query": {"bool": {
@@ -86,7 +87,8 @@ class Queries:
                                     }},
                                     {"range": {
                                         "CreationDate": {
-                                            "gte": date_int
+                                            "gte": date_int,
+                                            "lte": now
                                         }
                                     }}
                                 ]

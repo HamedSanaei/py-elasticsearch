@@ -1,6 +1,7 @@
 import csv
 import json
 from datetime import datetime
+from pathlib import Path
 
 
 class CsvToJson:
@@ -34,7 +35,7 @@ class CsvToJson:
     @classmethod
     def convertToArrayDictionary(cls, jsonPath):
         data = []
-        with open(jsonPath) as f:
+        with open(jsonPath.absolute()) as f:
             data = json.load(f)
         return data
 

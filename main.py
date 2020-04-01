@@ -3,28 +3,29 @@ from elasticsearch import Elasticsearch
 from CsvToJson import CsvToJson
 from Queries import Queries
 from datetime import datetime
+from pathlib import Path
 
 es = Elasticsearch()
 
 
 # es = Elasticsearch(HOST="http://localhost",PORT=9200)
 
-# result = es.indices.delete(index="answer-index")
-# result = es.indices.delete(index="question-index")
+#result = es.indices.delete(index="answer-index")
+#result = es.indices.delete(index="question-index")
 
 
-docs = CsvToJson.convertToArrayDictionary("data/QueryResults.json")
+docs = CsvToJson.convertToArrayDictionary(Path("data/QueryResults.json"))
 for i in range(0, len(docs)):
     es.index(index="question-index",
              doc_type="Stackoverflow", id=i, body=docs[i])
 
 
-docs = CsvToJson.convertToArrayDictionary("data/QueryResults2.json")
+docs = CsvToJson.convertToArrayDictionary(Path("data/QueryResults2.json"))
 for i in range(0, len(docs)):
     es.index(index="answer-index",
              doc_type="Stackoverflow", id=i, body=docs[i])
 
-
+#mp = es.indices.get_mapping(index="question-index")
 # result = es.indices.exists(index="question-index")
 # print(result)
 
@@ -44,10 +45,10 @@ Queries.forthQuestion("answer-index", 55243660, 1)
 # Fift Question
 Queries.FiftQuestion("answer-index", "dig")
 
-# Sixth Question
-date_time = datetime(2019, 1, 4)
+# Sixth Question ##problem
+date_time = datetime(2019, 6, 6)
 hamed = date_time.strftime("%Y-%d-%m %H:%M:%S")
-Queries.sixthQuestion("answer-index", "t", date_time)
+Queries.sixthQuestion("answer-index", "yes", date_time)
 
 # res = es.get(index="test-index", id=1)
 # print(res['_source'])
